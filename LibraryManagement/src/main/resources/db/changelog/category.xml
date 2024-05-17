@@ -6,7 +6,7 @@
 
     <changeSet id="category.xml" author="vu" runOnChange="true">
         <createTable tableName="categories">
-            <column name="id" type="BIGINT">
+            <column name="id" type="VARCHAR(255)">
                 <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="name" type="VARCHAR(255)">

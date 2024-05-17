@@ -6,15 +6,15 @@
 
     <changeSet id="borrowing.xml" author="vu" runOnChange="true">
         <createTable tableName="borrowings">
-            <column name="id" type="BIGINT">
-                <constraints primaryKey="true" nullable="false"  />
+            <column name="id" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="book_id" type="BIGINT">
+            <column name="book_id" type="VARCHAR(255)">
                 <constraints foreignKeyName="FK_book_borrowing_id"
                              references="books(id)"
                              nullable="false"/>
             </column>
-            <column name="reader_id" type="BIGINT">
+            <column name="reader_id" type="VARCHAR(255)">
                 <constraints foreignKeyName="FK_reader_borrowing_id"
                              references="readers(id)"
                              nullable="false"/>

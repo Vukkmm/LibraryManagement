@@ -21,4 +21,10 @@ public class Category extends BaseEntityWithUpdater {
     private String description;
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+    public Category(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.isDeleted = false;
+    }
 }

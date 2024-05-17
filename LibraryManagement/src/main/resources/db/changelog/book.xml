@@ -6,7 +6,7 @@
 
     <changeSet id="book.xml" author="vu" runOnChange="true">
         <createTable tableName="books">
-            <column name="id" type="BIGINT">
+            <column name="id" type="VARCHAR(255)">
                 <constraints primaryKey="true" nullable="false"  />
             </column>
             <column name="title" type="VARCHAR(255)">
@@ -21,7 +21,7 @@
             <column name="description" type="TEXT">
                 <constraints nullable="false" />
             </column>
-            <column name="category_id" type="BIGINT">
+            <column name="category_id" type="VARCHAR(255)">
                 <constraints foreignKeyName="FK_category_book_id"
                              references="categories(id)"
                              nullable="false"/>

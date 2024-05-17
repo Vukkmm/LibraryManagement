@@ -5,5 +5,5 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Repository;
 
 @NoRepositoryBean
-public interface BaseRepository<T> extends JpaRepository<T, Long> {
+public interface BaseRepository<T> extends JpaRepository<T, String> {
 }
