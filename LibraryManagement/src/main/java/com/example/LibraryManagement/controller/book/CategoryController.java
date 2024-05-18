@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.example.LibraryManagement.constant.CommonConstants.DEFAULT_LANGUAGE;
 import static com.example.LibraryManagement.constant.CommonConstants.LANGUAGE;
-import static com.example.LibraryManagement.constant.MessageCodeConstant.CREATE_CATEGORY;
-import static com.example.LibraryManagement.constant.MessageCodeConstant.LIST_CATEGORIES;
+import static com.example.LibraryManagement.constant.MessageCodeConstant.*;
 
 @RestController
 @Slf4j
@@ -51,5 +50,15 @@ public class CategoryController {
         );
     }
 
+    @GetMapping("{id}")
+    public  ResponseGeneral<CategoryResponse> detail(
+        @PathVariable String id,
+        @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        return ResponseGeneral.ofSuccess(
+                messageService.getMessage(DETAIL_CATEGORY, language),
+                categoryService.detail(id)
+        );
+    }
 
 }

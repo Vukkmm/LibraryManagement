@@ -9,4 +9,6 @@ public interface CategoryService {
     CategoryResponse create(CategoryRequest request);
 
     PageResponse<CategoryResponse> list(String keyword, int size, int page, boolean isAll);
+
+    CategoryResponse detail(String id);
 }

@@ -36,4 +36,13 @@ public interface CategoryRepository extends BaseRepository<Category> {
       ) AND r.isDeleted = false
       """)
     Page<CategoryResponse> search(Pageable pageable, String keyword);
+
+
+    @Query("""
+        SELECT new com.example.LibraryManagement.dto.response.CategoryResponse
+        (r.id,r.name, r.description)
+        FROM Category r
+        WHERE r.id=:id AND r.isDeleted= false
+        """)
+    CategoryResponse detail(String id);
 }

@@ -5,6 +5,7 @@ import com.example.LibraryManagement.dto.request.CategoryRequest;
 import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.entity.book.Category;
 import com.example.LibraryManagement.exception.book.CategoryAlreadyExistException;
+import com.example.LibraryManagement.exception.book.CategoryNotFoundException;
 import com.example.LibraryManagement.repository.book.CategoryRepository;
 import com.example.LibraryManagement.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,13 @@ public class CategoryServiceImpl implements CategoryService {
         return PageResponse.of(responses.getContent(), responses.getNumberOfElements());
     }
 
+    @Override
+    public CategoryResponse detail(String id) {
+        log.info("(detail) id : {}", id);
+        this.find(id);
+        return repository.detail(id);
+    }
+
     private void checkExist(String name) {
         log.debug("checkExist() {}", name);
         repository.checkExist(name);
@@ -46,6 +54,15 @@ public class CategoryServiceImpl implements CategoryService {
             log.error("checkExist:{}", name);
             throw  new CategoryAlreadyExistException();
         }
+    }
+
+    private Category find(String id) {
+        log.debug("findById() {}", id);
+        Category category =repository.findById(id).orElseThrow(CategoryNotFoundException::new);
+        if (category.isDeleted()) {
+            throw new CategoryNotFoundException();
+        }
+        return category;
     }
 
 }
