@@ -1,4 +1,4 @@
-package com.example.LibraryManagement.service;
+package com.example.LibraryManagement.service.book;
 
 import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.request.CategoryRequest;
@@ -11,4 +11,8 @@ public interface CategoryService {
     PageResponse<CategoryResponse> list(String keyword, int size, int page, boolean isAll);
 
     CategoryResponse detail(String id);
+
+    void delete(String id);
+
+    CategoryResponse  update(String id, CategoryRequest request);
 }

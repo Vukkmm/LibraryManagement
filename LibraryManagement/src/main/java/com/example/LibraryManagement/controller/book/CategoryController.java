@@ -4,7 +4,7 @@ import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
 import com.example.LibraryManagement.dto.request.CategoryRequest;
 import com.example.LibraryManagement.dto.response.CategoryResponse;
-import com.example.LibraryManagement.service.CategoryService;
+import com.example.LibraryManagement.service.book.CategoryService;
 import com.example.LibraryManagement.service.MessageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -55,10 +55,30 @@ public class CategoryController {
         @PathVariable String id,
         @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
+        log.info("(detail) id : {}", id);
         return ResponseGeneral.ofSuccess(
                 messageService.getMessage(DETAIL_CATEGORY, language),
                 categoryService.detail(id)
         );
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseGeneral<CategoryResponse> delete(
+            @PathVariable String id,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        log.info("(delete) id : {}", id);
+        categoryService.delete(id);
+        return ResponseGeneral.ofSuccess(messageService.getMessage(DELETE_CATEGORY, language));
+    }
+
+    @PutMapping("{id}")
+    public ResponseGeneral<CategoryResponse> update(
+            @PathVariable String id,
+            @Valid @RequestBody CategoryRequest request,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        return ResponseGeneral.ofSuccess(messageService.getMessage(UPDATE_CATEGORY, language), categoryService.update(id, request));
     }
 
 }
