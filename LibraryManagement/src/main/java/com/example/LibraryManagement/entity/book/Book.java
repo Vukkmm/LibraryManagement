@@ -23,7 +23,15 @@ public class Book extends BaseEntityWithUpdater {
     @Column(name = "description")
     private String description;
     @Column(name = "category_id")
-    private Long categoryId;
+    private String categoryId;
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+    public Book(String title, String author, String publicationYear, String description, String categoryId) {
+        this.title = title;
+        this.author = author;
+        this.publicationYear = publicationYear;
+        this.description = description;
+        this.categoryId = categoryId;
+    }
 }

@@ -30,6 +30,7 @@ public class CategoryController {
             @Valid @RequestBody CategoryRequest request,
             @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
     ){
+        log.info("(create) request : {}", request);
         return ResponseGeneral.ofCreated(
                 messageService.getMessage(CREATE_CATEGORY, language),
                 categoryService.create(request)

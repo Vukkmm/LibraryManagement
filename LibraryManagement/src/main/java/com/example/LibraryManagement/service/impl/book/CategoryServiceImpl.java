@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
     @Override
+    @Transactional
     public CategoryResponse create(CategoryRequest request) {
         log.info("(create) request : {}", request);
         this.checkExist(request.getName());

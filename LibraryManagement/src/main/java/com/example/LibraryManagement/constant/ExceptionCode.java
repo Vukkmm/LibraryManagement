@@ -8,5 +8,7 @@ public class ExceptionCode {
     public static final String USER_NOT_FOUND_CODE = "com.example.LibraryManagement.exception.base.NotFoundException.UserNotFoundException";
     public static final String GENERIC_CODE = "com.example.LibraryManagement.exception.base.GenericException";
 
-    public static final String Category_Already_Exist_Exception = "com.learn.LibraryManagement.exception.account.CategoryAlreadyExistException";
+    public static final String Category_Already_Exist_Exception = "com.example.LibraryManagement.exception.book.CategoryAlreadyExistException";
+    public static final String Book_Already_Exist_Exception = "com.example.LibraryManagement.exception.book.BookAlreadyExistException";
+
 }

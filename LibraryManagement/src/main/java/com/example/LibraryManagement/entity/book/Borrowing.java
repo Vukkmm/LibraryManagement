@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "borrowings")
 public class Borrowing extends BaseEntityWithUpdater {
     @Column(name = "book_id")
-    private Long bookId;
+    private String bookId;
     @Column(name = "reader_id")
-    private Long readerId;
+    private String readerId;
     @Column(name = "borrow_date")
     private String borrowDate;
     @Column(name = "due_date")
