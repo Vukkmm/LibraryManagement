@@ -11,5 +11,10 @@ public class MessageCodeConstant {
 
     public static final String CREATE_BOOK ="com.example.LibraryManagement.controller.book.book.create";
 
+    public static final String LIST_BOOKS ="com.example.LibraryManagement.controller.book.book.list";
+
+    public static final String DETAIL_BOOK="com.example.LibraryManagement.controller.book.book.detail";
+
+
 
 }

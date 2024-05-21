@@ -85,7 +85,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private Category find(String id) {
-        log.debug("findById() {}", id);
+        log.debug("find() {}", id);
         Category category =repository.findById(id).orElseThrow(CategoryNotFoundException::new);
         if (category.isDeleted()) {
             throw new CategoryNotFoundException();

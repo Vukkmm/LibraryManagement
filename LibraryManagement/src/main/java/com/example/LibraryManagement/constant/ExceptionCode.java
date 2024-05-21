@@ -11,4 +11,6 @@ public class ExceptionCode {
     public static final String Category_Already_Exist_Exception = "com.example.LibraryManagement.exception.book.CategoryAlreadyExistException";
     public static final String Book_Already_Exist_Exception = "com.example.LibraryManagement.exception.book.BookAlreadyExistException";
 
+    public static final String BOOK_NOT_FOUND_EXCEPTION = "com.example.LibraryManagement.exception.book.book.CategoryNotFoundException";
+
 }

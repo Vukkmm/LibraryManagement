@@ -1,5 +1,6 @@
 package com.example.LibraryManagement.controller.book;
 
+import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
 import com.example.LibraryManagement.dto.request.BookRequest;
 import com.example.LibraryManagement.dto.response.BookResponse;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.example.LibraryManagement.constant.CommonConstants.DEFAULT_LANGUAGE;
 import static com.example.LibraryManagement.constant.CommonConstants.LANGUAGE;
-import static com.example.LibraryManagement.constant.MessageCodeConstant.CREATE_BOOK;
+import static com.example.LibraryManagement.constant.MessageCodeConstant.*;
 
 @Slf4j
 @RestController
@@ -32,6 +33,31 @@ public class BookController {
         return ResponseGeneral.ofCreated(
                 messageService.getMessage(CREATE_BOOK, language),
                 bookService.create(request)
+        );
+    }
+
+    @GetMapping
+    public ResponseGeneral<PageResponse<BookResponse>> list(
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "all", defaultValue = "false", required = false) boolean isAll,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
+        return  ResponseGeneral.ofSuccess(messageService.getMessage(LIST_BOOKS, language),
+                bookService.list(keyword,size,page,isAll));
+    }
+
+    @GetMapping("{id}")
+    public  ResponseGeneral<BookResponse> detail(
+            @PathVariable String id,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        log.info("(detail) id : {}", id);
+        return ResponseGeneral.ofSuccess(
+                messageService.getMessage(DETAIL_BOOK, language),
+                bookService.detail(id)
         );
     }
 }
