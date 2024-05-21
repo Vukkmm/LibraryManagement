@@ -19,8 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -61,6 +59,14 @@ public class BookServiceImpl implements BookService {
     public BookResponse detail(String id) {
         log.info("(detail) id : {}", id);
         return this.find(id);
+    }
+
+    @Override
+    @Transactional
+    public void delete(String id) {
+        log.info("(delete) id : {}", id);
+        this.find(id);
+        repository.deleteById(id);
     }
 
     private BookResponse find(String id) {

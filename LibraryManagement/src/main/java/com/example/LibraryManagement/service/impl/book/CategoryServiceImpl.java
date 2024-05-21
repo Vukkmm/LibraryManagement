@@ -94,7 +94,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private void checkNameForUpdate(String name, String nameRequest) {
-        log.debug("checkNameForUpdate() {} {}", name, nameRequest);
+        log.debug("checkNameForUpdate() name : {}, nameRequest {}", name, nameRequest);
         if(!name.equals(nameRequest)) {
             this.checkExist(nameRequest);
         }

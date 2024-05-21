@@ -60,4 +60,14 @@ public class BookController {
                 bookService.detail(id)
         );
     }
+
+    @DeleteMapping("{id}")
+    public ResponseGeneral<BookResponse> delete(
+            @PathVariable String id,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        log.info("(delete) id : {}", id);
+        bookService.delete(id);
+        return ResponseGeneral.ofSuccess(messageService.getMessage(DELETE_BOOK, language));
+    }
 }

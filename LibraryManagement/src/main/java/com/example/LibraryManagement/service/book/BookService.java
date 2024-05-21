@@ -11,4 +11,6 @@ public interface BookService {
 
     BookResponse detail(String id);
 
+    void delete(String id);
+
 }
