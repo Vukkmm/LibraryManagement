@@ -33,7 +33,7 @@ public class BookServiceImpl implements BookService {
     public BookResponse create(BookRequest request) {
         log.info("(create) request : {}", request);
         this.checkTitleExist(request.getTitle());
-        Category category = checkCategoryIdExist(request.getCategoryId());
+        checkCategoryIdExist(request.getCategoryId());
         Book book = new Book(
                 request.getTitle(),
                 request.getAuthor(),
@@ -42,9 +42,7 @@ public class BookServiceImpl implements BookService {
                 request.getCategoryId()
         );
         repository.save(book);
-        return new BookResponse(book.getId(), book.getTitle(), book.getAuthor(), book.getPublicationYear(),
-                book.getDescription(),
-                new CategoryResponse(category.getId(), category.getName(), category.getDescription()));
+        return getBookResponse(book);
     }
 
     @Override
@@ -58,7 +56,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookResponse detail(String id) {
         log.info("(detail) id : {}", id);
-        return this.find(id);
+        Book book = this.find(id);
+        checkCategoryIdExist(book.getCategoryId());
+        return getBookResponse(book);
     }
 
     @Override
@@ -69,21 +69,47 @@ public class BookServiceImpl implements BookService {
         repository.deleteById(id);
     }
 
-    private BookResponse find(String id) {
+    @Override
+    @Transactional
+    public BookResponse update(String id, BookRequest request) {
+        log.info("(update) id : {}, request : {}", id, request);
+        Book book = find(id);
+        this.checkTitleForUpdate(book.getTitle(), request.getTitle());
+        log.debug("check title of book already exists when update");
+        setValueUpdate(book, request);
+        repository.save(book);
+        return  getBookResponse(book);
+    }
+
+    private void checkTitleForUpdate(String title, String titleRequest) {
+        log.debug("checkNameForUpdate() title : {}, titleRequest {}", title, titleRequest);
+        if(!title.equals(titleRequest)) {
+            this.checkTitleExist(titleRequest);
+        }
+    }
+
+    private void setValueUpdate(Book book, BookRequest request) {
+        log.info("(setValueUpdate)");
+        book.setTitle(request.getTitle());
+        book.setAuthor(request.getAuthor());
+        book.setDescription(request.getDescription());
+        book.setPublicationYear(request.getPublicationYear());
+        this.checkCategoryIdExist(request.getCategoryId());
+        book.setCategoryId(request.getCategoryId());
+    }
+
+    private Book find(String id) {
         log.debug("(find) {}", id);
         Book book = repository.findById(id).orElseThrow(BookNotFoundException::new);
         if(book.isDeleted()) {
             throw new BookNotFoundException();
         }
-        Category category = checkCategoryIdExist(book.getCategoryId());
-        CategoryResponse categoryResponse = new CategoryResponse(category.getId(), category.getName(), category.getDescription());
-        return new BookResponse(book.getId(),
-                book.getTitle(),
-                book.getAuthor(),
-                book.getDescription(),
-                book.getPublicationYear(),
-                categoryResponse,
-                book.getCategoryId());
+        return book;
+    }
+
+    private CategoryResponse getCategoryResponseById(String id) {
+        Category category = checkCategoryIdExist(id);
+        return  new CategoryResponse(category.getId(), category.getName(), category.getDescription());
     }
 
 
@@ -99,6 +125,17 @@ public class BookServiceImpl implements BookService {
     private Category checkCategoryIdExist(String categoryId) {
         log.debug("checkCategoryIdExist() {}", categoryId);
         return categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+    }
+
+    private BookResponse getBookResponse(Book book) {
+        return new BookResponse(
+                book.getId(),
+                book.getTitle(),
+                book.getAuthor(),
+                book.getDescription(),
+                book.getPublicationYear(),
+                getCategoryResponseById(book.getCategoryId())
+        );
     }
 }
 

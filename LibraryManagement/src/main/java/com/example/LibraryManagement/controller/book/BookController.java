@@ -3,7 +3,9 @@ package com.example.LibraryManagement.controller.book;
 import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
 import com.example.LibraryManagement.dto.request.BookRequest;
+import com.example.LibraryManagement.dto.request.CategoryRequest;
 import com.example.LibraryManagement.dto.response.BookResponse;
+import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.service.MessageService;
 import com.example.LibraryManagement.service.book.BookService;
 import jakarta.validation.Valid;
@@ -69,5 +71,14 @@ public class BookController {
         log.info("(delete) id : {}", id);
         bookService.delete(id);
         return ResponseGeneral.ofSuccess(messageService.getMessage(DELETE_BOOK, language));
+    }
+
+    @PutMapping("{id}")
+    public ResponseGeneral<BookResponse> update(
+            @PathVariable String id,
+            @Valid @RequestBody BookRequest request,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        return ResponseGeneral.ofSuccess(messageService.getMessage(UPDATE_BOOK, language), bookService.update(id, request));
     }
 }
