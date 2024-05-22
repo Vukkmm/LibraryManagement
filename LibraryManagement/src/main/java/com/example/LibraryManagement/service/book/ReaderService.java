@@ -7,6 +7,6 @@ import com.example.LibraryManagement.dto.response.ReaderResponse;
 public interface ReaderService {
     ReaderResponse create(ReaderRequest request);
 
-//    PageResponse<ReaderResponse> list(String keyword, int size, int page, boolean isAll);
+    PageResponse<ReaderResponse> list(String keyword, int size, int page, boolean isAll);
 
 }

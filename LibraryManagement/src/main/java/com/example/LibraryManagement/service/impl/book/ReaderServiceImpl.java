@@ -36,14 +36,14 @@ public class ReaderServiceImpl implements ReaderService {
         return new ReaderResponse(reader.getId(), reader.getName(), reader.getEmail(), reader.getPhoneNumber());
     }
 
-//    @Override
-//    public PageResponse<ReaderResponse> list(String keyword, int size, int page, boolean isAll) {
-//        log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
-//        Page<ReaderResponse> responses = isAll ? repository.findAllCategory(PageRequest.of(page,size))
-//                : repository.search(PageRequest.of(page,size), keyword);
-//
-//        return PageResponse.of(responses.getContent(), responses.getNumberOfElements());
-//    }
+    @Override
+    public PageResponse<ReaderResponse> list(String keyword, int size, int page, boolean isAll) {
+        log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
+        Page<ReaderResponse> responses = isAll ? repository.findAllCategory(PageRequest.of(page,size))
+                : repository.search(PageRequest.of(page,size), keyword);
+
+        return PageResponse.of(responses.getContent(), responses.getNumberOfElements());
+    }
 
     private void checkExist(String name) {
         log.debug("(checkExist) name : {}", name);
