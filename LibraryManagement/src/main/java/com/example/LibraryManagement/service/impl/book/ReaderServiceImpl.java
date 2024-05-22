@@ -61,6 +61,32 @@ public class ReaderServiceImpl implements ReaderService {
         repository.deleteById(id);
     }
 
+    @Override
+    @Transactional
+    public ReaderResponse update(String id, ReaderRequest request) {
+        log.info("(update) id : {}, request : {}", id, request);
+        Reader reader = find(id);
+        this.checkNameForUpdate(reader.getName(), request.getName());
+        log.debug("check name of reader already exists when update");
+        setValueUpDate(reader, request);
+        repository.save(reader);
+        return new ReaderResponse(reader.getId(), reader.getName(), reader.getEmail(), reader.getPhoneNumber());
+    }
+
+    private void setValueUpDate(Reader reader, ReaderRequest request) {
+        log.info("(setValueUpdate)");
+        reader.setName(request.getName());
+        reader.setEmail(request.getEmail());
+        reader.setPhoneNumber(request.getPhoneNumber());
+    }
+
+    private void checkNameForUpdate(String name, String nameRequest) {
+        log.debug("checkNameForUpdate() name : {}, nameRequest {}", name, nameRequest);
+        if (!name.equals(nameRequest)) {
+            this.checkExist(nameRequest);
+        }
+    }
+
     private Reader find(String id) {
         log.debug("(find) id : {}", id);
         Reader reader = repository.findById(id).orElseThrow(ReaderNotFoundException::new);

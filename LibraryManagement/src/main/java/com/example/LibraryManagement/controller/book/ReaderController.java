@@ -2,7 +2,9 @@ package com.example.LibraryManagement.controller.book;
 
 import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
+import com.example.LibraryManagement.dto.request.CategoryRequest;
 import com.example.LibraryManagement.dto.request.ReaderRequest;
+import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.dto.response.ReaderResponse;
 import com.example.LibraryManagement.service.MessageService;
 import com.example.LibraryManagement.service.book.ReaderService;
@@ -72,6 +74,15 @@ public class ReaderController {
         log.info("(delete) id : {}", id);
         readerService.delete(id);
         return ResponseGeneral.ofSuccess(messageService.getMessage(DETAIL_READER, language));
+    }
+
+    @PutMapping("{id}")
+    public ResponseGeneral<ReaderResponse> update(
+            @PathVariable String id,
+            @Valid @RequestBody ReaderRequest request,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        return ResponseGeneral.ofSuccess(messageService.getMessage(UPDATE_READER, language), readerService.update(id, request));
     }
 
 

@@ -13,6 +13,6 @@ public interface ReaderService {
 
     void delete(String id);
 
-
+    ReaderResponse update(String id, ReaderRequest request);
 
 }
