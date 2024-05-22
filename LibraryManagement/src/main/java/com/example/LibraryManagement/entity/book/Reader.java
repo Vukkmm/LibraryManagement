@@ -22,4 +22,10 @@ public class Reader extends BaseEntityWithUpdater {
     private String phoneNumber;
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+    public Reader(String name, String email, String phoneNumber) {
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
 }

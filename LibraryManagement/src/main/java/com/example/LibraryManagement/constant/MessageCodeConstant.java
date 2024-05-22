@@ -18,6 +18,16 @@ public class MessageCodeConstant {
     public static final String DELETE_BOOK="com.example.LibraryManagement.controller.book.book.delete";
     public static final String UPDATE_BOOK="com.example.LibraryManagement.controller.book.book.update";
 
+    public static final String CREATE_READER ="com.example.LibraryManagement.controller.book.reader.create";
+
+    public static final String LIST_READER ="com.example.LibraryManagement.controller.book.reader.list";
+
+    public static final String DETAIL_READER="com.example.LibraryManagement.controller.book.reader.detail";
+
+    public static final String DELETE_READER="com.example.LibraryManagement.controller.book.reader.delete";
+    public static final String UPDATE_READER="com.example.LibraryManagement.controller.book.reader.update";
+
+
 
 
 

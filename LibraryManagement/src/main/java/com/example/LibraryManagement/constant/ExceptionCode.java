@@ -8,11 +8,16 @@ public class ExceptionCode {
     public static final String USER_NOT_FOUND_CODE = "com.example.LibraryManagement.exception.base.NotFoundException.UserNotFoundException";
     public static final String GENERIC_CODE = "com.example.LibraryManagement.exception.base.GenericException";
 
-    public static final String Category_Already_Exist_Exception = "com.example.LibraryManagement.exception.book.CategoryAlreadyExistException";
+    public static final String CATEGORY_ALREADY_EXIST_EXCEPTION = "com.example.LibraryManagement.exception.book.CategoryAlreadyExistException";
 
     public static final String CATEGORY_NOT_FOUND_EXCEPTION = "com.example.LibraryManagement.exception.book.CategoryNotFoundException";
-    public static final String Book_Already_Exist_Exception = "com.example.LibraryManagement.exception.book.BookAlreadyExistException";
-
+    public static final String BOOK_ALREADY_EXIST_EXCEPTION = "com.example.LibraryManagement.exception.book.BookAlreadyExistException";
     public static final String BOOK_NOT_FOUND_EXCEPTION = "com.example.LibraryManagement.exception.book.BookNotFoundException";
+
+    public static final String READER_ALREADY_EXIST_EXCEPTION = "com.example.LibraryManagement.exception.book.ReaderAlreadyExistException";
+    public static final String READER_NOT_FOUND_EXCEPTION = "com.example.LibraryManagement.exception.book.ReaderNotFoundException";
+
+
+
 
 }
