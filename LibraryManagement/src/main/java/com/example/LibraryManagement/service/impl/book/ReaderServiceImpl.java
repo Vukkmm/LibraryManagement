@@ -53,6 +53,14 @@ public class ReaderServiceImpl implements ReaderService {
         return repository.detail(id);
     }
 
+    @Override
+    @Transactional
+    public void delete(String id) {
+        log.info("(delete) id : {}", id);
+        this.find(id);
+        repository.deleteById(id);
+    }
+
     private Reader find(String id) {
         log.debug("(find) id : {}", id);
         Reader reader = repository.findById(id).orElseThrow(ReaderNotFoundException::new);

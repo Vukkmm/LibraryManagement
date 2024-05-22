@@ -63,6 +63,19 @@ public class ReaderController {
                 readerService.detail(id));
     }
 
+    @DeleteMapping("{id}")
+    public  ResponseGeneral<ReaderResponse> delete(
+            @PathVariable String id,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+
+    ) {
+        log.info("(delete) id : {}", id);
+        readerService.delete(id);
+        return ResponseGeneral.ofSuccess(messageService.getMessage(DETAIL_READER, language));
+    }
+
+
+
 
 
 

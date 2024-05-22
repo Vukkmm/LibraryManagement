@@ -11,4 +11,8 @@ public interface ReaderService {
 
     ReaderResponse detail(String id);
 
+    void delete(String id);
+
+
+
 }
