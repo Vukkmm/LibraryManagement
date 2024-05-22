@@ -38,4 +38,12 @@ public interface ReaderRepository extends BaseRepository<Reader> {
       ) AND r.isDeleted = false
       """)
     Page<ReaderResponse> search(Pageable pageable, String keyword);
+
+    @Query("""
+        SELECT new com.example.LibraryManagement.dto.response.ReaderResponse
+        (r.id,r.name, r.email, r.phoneNumber)
+        FROM Reader r
+        WHERE r.id=:id AND r.isDeleted= false
+        """)
+    ReaderResponse detail(String id);
 }

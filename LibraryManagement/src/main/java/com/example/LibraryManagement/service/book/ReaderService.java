@@ -9,4 +9,6 @@ public interface ReaderService {
 
     PageResponse<ReaderResponse> list(String keyword, int size, int page, boolean isAll);
 
+    ReaderResponse detail(String id);
+
 }

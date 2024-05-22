@@ -52,6 +52,17 @@ public class ReaderController {
         );
     }
 
+    @GetMapping("{id}")
+    public  ResponseGeneral<ReaderResponse> detail(
+            @PathVariable String id,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+
+    ) {
+        log.info("(detail) id : {}", id);
+        return ResponseGeneral.ofSuccess(messageService.getMessage(DETAIL_READER, language),
+                readerService.detail(id));
+    }
+
 
 
 

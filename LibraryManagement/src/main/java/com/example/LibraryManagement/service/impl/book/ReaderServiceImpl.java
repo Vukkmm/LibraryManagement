@@ -5,6 +5,7 @@ import com.example.LibraryManagement.dto.request.ReaderRequest;
 import com.example.LibraryManagement.dto.response.ReaderResponse;
 import com.example.LibraryManagement.entity.book.Reader;
 import com.example.LibraryManagement.exception.book.ReaderAlreadyExistException;
+import com.example.LibraryManagement.exception.book.ReaderNotFoundException;
 import com.example.LibraryManagement.repository.book.ReaderRepository;
 import com.example.LibraryManagement.service.book.ReaderService;
 import jakarta.transaction.Transactional;
@@ -43,6 +44,22 @@ public class ReaderServiceImpl implements ReaderService {
                 : repository.search(PageRequest.of(page,size), keyword);
 
         return PageResponse.of(responses.getContent(), responses.getNumberOfElements());
+    }
+
+    @Override
+    public ReaderResponse detail(String id) {
+        log.info("(detail) id : {}", id);
+        this.find(id);
+        return repository.detail(id);
+    }
+
+    private Reader find(String id) {
+        log.debug("(find) id : {}", id);
+        Reader reader = repository.findById(id).orElseThrow(ReaderNotFoundException::new);
+        if(reader.isDeleted()) {
+            throw  new ReaderNotFoundException();
+        }
+        return reader;
     }
 
     private void checkExist(String name) {
