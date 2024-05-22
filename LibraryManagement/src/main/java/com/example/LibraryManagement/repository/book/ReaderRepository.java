@@ -7,6 +7,7 @@ import com.example.LibraryManagement.repository.BaseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,9 +16,19 @@ public interface ReaderRepository extends BaseRepository<Reader> {
     @Query("""
          SELECT CASE WHEN COUNT(r) > 0
          THEN true ELSE false END FROM Reader r
-         WHERE r.name = :name AND r.isDeleted = false
+         WHERE r.email = :email  AND r.isDeleted = false
         """)
-    boolean checkExist(String name);
+    boolean checkExistEmail(@Param("email") String email);
+
+    @Query("""
+         SELECT CASE WHEN COUNT(r) > 0
+         THEN true ELSE false END FROM Reader r
+         WHERE r.phoneNumber = :phoneNumber  AND r.isDeleted = false
+        """)
+    boolean checkExistPhoneNumber(@Param("phoneNumber") String phoneNumber);
+
+
+
 
     @Query(""" 
      SELECT new com.example.LibraryManagement.dto.response.ReaderResponse

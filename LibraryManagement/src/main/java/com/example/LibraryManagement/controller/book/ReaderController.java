@@ -2,9 +2,7 @@ package com.example.LibraryManagement.controller.book;
 
 import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
-import com.example.LibraryManagement.dto.request.CategoryRequest;
 import com.example.LibraryManagement.dto.request.ReaderRequest;
-import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.dto.response.ReaderResponse;
 import com.example.LibraryManagement.service.MessageService;
 import com.example.LibraryManagement.service.book.ReaderService;

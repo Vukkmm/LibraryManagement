@@ -4,6 +4,8 @@ import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.request.ReaderRequest;
 import com.example.LibraryManagement.dto.response.ReaderResponse;
 import com.example.LibraryManagement.entity.book.Reader;
+import com.example.LibraryManagement.exception.book.EmailAlreadyExistException;
+import com.example.LibraryManagement.exception.book.PhoneNumberAlreadyExistException;
 import com.example.LibraryManagement.exception.book.ReaderAlreadyExistException;
 import com.example.LibraryManagement.exception.book.ReaderNotFoundException;
 import com.example.LibraryManagement.repository.book.ReaderRepository;
@@ -27,7 +29,8 @@ public class ReaderServiceImpl implements ReaderService {
     @Transactional
     public ReaderResponse create(ReaderRequest request) {
         log.info("(create) request : {}", request);
-        this.checkExist(request.getName());
+        this.checkExistEmail(request.getEmail());
+        this.checkExistPhoneNumber(request.getPhoneNumber());
         Reader reader = new Reader(
                 request.getName(),
                 request.getEmail(),
@@ -66,7 +69,7 @@ public class ReaderServiceImpl implements ReaderService {
     public ReaderResponse update(String id, ReaderRequest request) {
         log.info("(update) id : {}, request : {}", id, request);
         Reader reader = find(id);
-        this.checkNameForUpdate(reader.getName(), request.getName());
+        this.checkForUpdate(reader.getEmail(), reader.getPhoneNumber(), request.getEmail(), request.getPhoneNumber());
         log.debug("check name of reader already exists when update");
         setValueUpDate(reader, request);
         repository.save(reader);
@@ -80,10 +83,14 @@ public class ReaderServiceImpl implements ReaderService {
         reader.setPhoneNumber(request.getPhoneNumber());
     }
 
-    private void checkNameForUpdate(String name, String nameRequest) {
-        log.debug("checkNameForUpdate() name : {}, nameRequest {}", name, nameRequest);
-        if (!name.equals(nameRequest)) {
-            this.checkExist(nameRequest);
+    private void checkForUpdate(String email, String phoneNumber, String emailRequest, String phoneNumberRequest) {
+        log.debug("checkNameForUpdate() email : {}, phoneNumber : {}, emailRequest : {}, phoneNumberRequest {}"
+                , email, phoneNumber, emailRequest, phoneNumberRequest);
+        if (!email.equals(emailRequest)) {
+            this.checkExistEmail(emailRequest);
+        }
+        if (!phoneNumber.equals(phoneNumberRequest)) {
+            this.checkExistPhoneNumber(phoneNumberRequest);
         }
     }
 
@@ -96,12 +103,25 @@ public class ReaderServiceImpl implements ReaderService {
         return reader;
     }
 
-    private void checkExist(String name) {
-        log.debug("(checkExist) name : {}", name);
-        repository.checkExist(name);
-        if (repository.checkExist(name)) {
-            log.error("checkExist:{}", name);
-            throw new ReaderAlreadyExistException();
+
+    private void checkExistEmail(String email) {
+        log.debug("(checkExistEmail) email : {}", email);
+        repository.checkExistEmail(email);
+        if (repository.checkExistEmail(email)) {
+            log.error("(checkExistEmail) email : {}", email);
+            throw new EmailAlreadyExistException();
         }
     }
+
+    private void checkExistPhoneNumber(String phoneNumber) {
+        log.debug("(checkExistPhoneNumber) phoneNumber : {}", phoneNumber);
+        repository.checkExistPhoneNumber(phoneNumber);
+        if (repository.checkExistPhoneNumber( phoneNumber)) {
+            log.error("(checkExistPhoneNumber)  phoneNumber : {}", phoneNumber);
+            throw new PhoneNumberAlreadyExistException();
+        }
+    }
+
+
+
 }
