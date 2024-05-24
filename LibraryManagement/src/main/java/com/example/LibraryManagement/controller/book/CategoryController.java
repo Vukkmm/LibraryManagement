@@ -5,7 +5,7 @@ import com.example.LibraryManagement.dto.base.ResponseGeneral;
 import com.example.LibraryManagement.dto.request.CategoryRequest;
 import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.service.book.CategoryService;
-import com.example.LibraryManagement.service.MessageService;
+import com.example.LibraryManagement.service.message.MessageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

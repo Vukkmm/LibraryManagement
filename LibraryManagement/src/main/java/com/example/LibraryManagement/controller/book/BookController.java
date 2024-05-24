@@ -3,14 +3,13 @@ package com.example.LibraryManagement.controller.book;
 import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
 import com.example.LibraryManagement.dto.request.BookRequest;
-import com.example.LibraryManagement.dto.request.CategoryRequest;
 import com.example.LibraryManagement.dto.response.BookResponse;
-import com.example.LibraryManagement.dto.response.CategoryResponse;
-import com.example.LibraryManagement.service.MessageService;
+import com.example.LibraryManagement.service.message.MessageService;
 import com.example.LibraryManagement.service.book.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.LibraryManagement.constant.CommonConstants.DEFAULT_LANGUAGE;
@@ -25,7 +24,7 @@ public class BookController {
      private final BookService bookService;
      private final MessageService messageService;
 
-
+     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ResponseGeneral<BookResponse> create(
             @Valid @RequestBody BookRequest request,

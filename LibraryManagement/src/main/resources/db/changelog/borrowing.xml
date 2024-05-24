@@ -19,16 +19,16 @@
                              references="readers(id)"
                              nullable="false"/>
             </column>
-            <column name="borrow_date" type="VARCHAR(20)">
+            <column name="borrow_date" type="VARCHAR(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="due_date" type="VARCHAR(20)">
+            <column name="due_date" type="VARCHAR(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="return_date" type="VARCHAR(20)">
+            <column name="return_date" type="VARCHAR(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="status" type="VARCHAR(20)">
+            <column name="status" type="VARCHAR(255)">
                 <constraints nullable="false" />
             </column>
             <column name="is_deleted" type="BOOLEAN" defaultValueBoolean="false"/>

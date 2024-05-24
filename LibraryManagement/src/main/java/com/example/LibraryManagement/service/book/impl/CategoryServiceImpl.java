@@ -1,4 +1,4 @@
-package com.example.LibraryManagement.service.impl.book;
+package com.example.LibraryManagement.service.book.impl;
 
 import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.request.CategoryRequest;

@@ -27,6 +27,16 @@ public class MessageCodeConstant {
     public static final String DELETE_READER="com.example.LibraryManagement.controller.book.reader.delete";
     public static final String UPDATE_READER="com.example.LibraryManagement.controller.book.reader.update";
 
+    public static final String CREATE_BORROWING ="com.example.LibraryManagement.controller.book.borrowing.create";
+
+    public static final String LIST_BORROWING ="com.example.LibraryManagement.controller.book.borrowing.list";
+
+    public static final String DETAIL_BORROWING="com.example.LibraryManagement.controller.book.borrowing.detail";
+
+    public static final String DELETE_BORROWING="com.example.LibraryManagement.controller.book.borrowing.delete";
+    public static final String UPDATE_BORROWING="com.example.LibraryManagement.controller.book.borrowing.update";
+
+
 
 
 

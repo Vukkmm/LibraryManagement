@@ -29,4 +29,12 @@ public class Borrowing extends BaseEntityWithUpdater {
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
+    public Borrowing(String bookId, String readerId, String borrowDate, String dueDate, String retunnDate, String status) {
+        this.bookId = bookId;
+        this.readerId = readerId;
+        this.borrowDate = borrowDate;
+        this.dueDate = dueDate;
+        this.retunnDate = retunnDate;
+        this.status = status;
+    }
 }

@@ -1,6 +1,6 @@
-package com.example.LibraryManagement.service.impl;
+package com.example.LibraryManagement.service.message.impl;
 
-import com.example.LibraryManagement.service.MessageService;
+import com.example.LibraryManagement.service.message.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;

@@ -4,7 +4,7 @@ import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
 import com.example.LibraryManagement.dto.request.ReaderRequest;
 import com.example.LibraryManagement.dto.response.ReaderResponse;
-import com.example.LibraryManagement.service.MessageService;
+import com.example.LibraryManagement.service.message.MessageService;
 import com.example.LibraryManagement.service.book.ReaderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +71,7 @@ public class ReaderController {
     ) {
         log.info("(delete) id : {}", id);
         readerService.delete(id);
-        return ResponseGeneral.ofSuccess(messageService.getMessage(DETAIL_READER, language));
+        return ResponseGeneral.ofSuccess(messageService.getMessage(DELETE_READER, language));
     }
 
     @PutMapping("{id}")
