@@ -12,4 +12,6 @@ public interface BorrowingService {
     BorrowingResponse detail(String id);
 
     void delete(String id);
+
+    BorrowingResponse update(String id, BorrowingRequest request);
 }

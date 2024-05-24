@@ -77,6 +77,20 @@ public class BorrowingController {
         );
     }
 
+    @PutMapping("{id}")
+    public ResponseGeneral<BorrowingResponse> update(
+            @PathVariable String id,
+            @Valid @RequestBody BorrowingRequest request,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+
+    ) {
+        log.info("(update) request : {}", request);
+        return ResponseGeneral.ofSuccess(
+                messageService.getMessage(UPDATE_BORROWING, language),
+                borrowingFacadeService.update(id, request)
+        );
+    }
+
 
 
 }

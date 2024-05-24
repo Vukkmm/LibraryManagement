@@ -4,7 +4,10 @@ import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.request.BorrowingRequest;
 import com.example.LibraryManagement.dto.response.BorrowingResponse;
 import com.example.LibraryManagement.entity.book.Borrowing;
+import com.example.LibraryManagement.exception.book.BookNotFoundException;
+import com.example.LibraryManagement.exception.book.BorrowingAlreadyExistException;
 import com.example.LibraryManagement.exception.book.BorrowingNotFoundException;
+import com.example.LibraryManagement.exception.book.ReaderNotFoundException;
 import com.example.LibraryManagement.repository.book.BorrowingRepository;
 import com.example.LibraryManagement.service.book.BorrowingService;
 import com.example.LibraryManagement.utils.DateUtils;
@@ -34,13 +37,10 @@ public class BorrowingServiceImpl implements BorrowingService {
                     );
         borrowing.setBorrowDate(DateUtils.getCurrentDateString());
         borrowing.setDueDate(DateUtils.getDueToDateString());
+        borrowing.setRetunnDate(" ");
+        borrowing.setStatus("NOT YET RETURNED");
         repository.save(borrowing);
-        return new BorrowingResponse(
-                borrowing.getId(),
-                borrowing.getBorrowDate(),
-                borrowing.getDueDate(),
-                borrowing.getRetunnDate(),
-                borrowing.getStatus());
+        return getBorrowingResponse(borrowing);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class BorrowingServiceImpl implements BorrowingService {
     @Override
     public BorrowingResponse detail(String id) {
         log.info("(detail) id : {}", id);
-        Borrowing borrowing = find(id);
+        this.find(id);
         return repository.detail(id);
     }
 
@@ -64,6 +64,58 @@ public class BorrowingServiceImpl implements BorrowingService {
         log.info("(delete) id : {}", id);
         this.find(id);
         repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public BorrowingResponse update(String id, BorrowingRequest request) {
+        log.info("(update) id : {}, request : {}", id, request);
+        Borrowing borrowing = find(id);
+        this.checkStatus(borrowing.getStatus());
+        this.checkBookIdForUpdate(borrowing.getBookId(), request.getBookId());
+        this.checkReaderIdForUpdate(borrowing.getReaderId(), request.getReaderId());
+        Borrowing newBorrowing = new Borrowing(
+                request.getBookId(),
+                request.getReaderId(),
+                borrowing.getBorrowDate(),
+                borrowing.getDueDate(),
+                request.getReturnDate(),
+                request.getStatus());
+        newBorrowing.setRetunnDate(DateUtils.getCurrentDateString());
+        newBorrowing.setStatus("RETURNED");
+        repository.save(newBorrowing);
+        return getBorrowingResponse(newBorrowing);
+
+    }
+
+    private void checkStatus(String status) {
+        log.debug("(checkStatus) status : {}", status);
+        if(status.equals("RETURNED")) {
+            throw new BorrowingAlreadyExistException();
+        }
+    }
+    private BorrowingResponse getBorrowingResponse(Borrowing borrowing) {
+        log.debug("(getBorrowingResponse) borrowing : {}", borrowing);
+        return new BorrowingResponse(
+                borrowing.getId(),
+                borrowing.getBorrowDate(),
+                borrowing.getDueDate(),
+                borrowing.getRetunnDate(),
+                borrowing.getStatus());
+    }
+
+    private void checkReaderIdForUpdate(String readerId, String readerIdRequest) {
+        log.debug("(checkReaderIdForUpdate) readerId :  {}, readerIdRequest : {}",   readerId, readerIdRequest );
+        if(!readerId.equals(readerIdRequest)) {
+            throw new ReaderNotFoundException();
+        }
+    }
+
+    private void checkBookIdForUpdate(String bookId, String bookIdRequest) {
+        log.debug("(checkBookIdForUpdate) bookId :  {}, bookIdRequest : {}",   bookId, bookIdRequest );
+        if(!bookId.equals(bookIdRequest)) {
+            throw new BookNotFoundException();
+        }
     }
 
     private Borrowing find(String id) {
