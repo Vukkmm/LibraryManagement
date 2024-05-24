@@ -58,6 +58,14 @@ public class BorrowingServiceImpl implements BorrowingService {
         return repository.detail(id);
     }
 
+    @Override
+    @Transactional
+    public void delete(String id) {
+        log.info("(delete) id : {}", id);
+        this.find(id);
+        repository.deleteById(id);
+    }
+
     private Borrowing find(String id) {
         log.debug("(find) {}", id);
         Borrowing borrowing = repository.findById(id).orElseThrow(BorrowingNotFoundException::new);

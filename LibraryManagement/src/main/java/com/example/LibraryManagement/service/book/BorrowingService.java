@@ -10,4 +10,6 @@ public interface BorrowingService {
     PageResponse<BorrowingResponse> list(String keyword, int size, int page, boolean isAll);
 
     BorrowingResponse detail(String id);
+
+    void delete(String id);
 }

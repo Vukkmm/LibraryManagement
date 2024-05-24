@@ -4,7 +4,6 @@ import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
 import com.example.LibraryManagement.dto.request.BorrowingRequest;
 import com.example.LibraryManagement.dto.response.BorrowingResponse;
-import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.facade.BorrowingFacadeService;
 import com.example.LibraryManagement.service.message.MessageService;
 import com.example.LibraryManagement.service.book.BorrowingService;
@@ -65,4 +64,19 @@ public class BorrowingController {
                 borrowingService.detail(id)
         );
     }
+
+    @DeleteMapping("{id}")
+    public ResponseGeneral<BorrowingResponse> delete(
+            @PathVariable String id,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        log.info("(detail) id : {}", id);
+        borrowingService.delete(id);
+        return ResponseGeneral.ofSuccess(
+                messageService.getMessage(DELETE_BORROWING, language)
+        );
+    }
+
+
+
 }
