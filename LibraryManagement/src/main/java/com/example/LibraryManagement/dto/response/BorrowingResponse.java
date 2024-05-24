@@ -11,12 +11,12 @@ public class BorrowingResponse {
     private String id;
     private String bookId;
     private String readerId;
+    private BookResponse bookResponse;
+    private ReaderResponse readerResponse;
     private String borrowDate;
     private String dueDate;
     private String returnDate;
     private String status;
-    private BookResponse bookResponse;
-    private ReaderResponse readerResponse;
 
     public BorrowingResponse(String id, String borrowDate, String dueDate, String returnDate, String status) {
         this.id = id;
@@ -36,4 +36,12 @@ public class BorrowingResponse {
         this.readerResponse = readerResponse;
     }
 
+    public BorrowingResponse(String bookId, String readerId, String borrowDate, String dueDate, String returnDate, String status) {
+        this.bookId = bookId;
+        this.readerId = readerId;
+        this.borrowDate = borrowDate;
+        this.dueDate = dueDate;
+        this.returnDate = returnDate;
+        this.status = status;
+    }
 }

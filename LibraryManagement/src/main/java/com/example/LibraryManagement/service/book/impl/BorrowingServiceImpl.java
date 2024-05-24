@@ -21,12 +21,13 @@ public class BorrowingServiceImpl implements BorrowingService {
     public BorrowingResponse create(BorrowingRequest request) {
         log.info("(create) request : {}", request);
         Borrowing borrowing = new Borrowing(
+                    request.getBookId(),
+                    request.getReaderId(),
                     request.getBorrowDate(),
                     request.getDueDate(),
                     request.getReturnDate(),
-                    request.getStatus(),
-                    request.getBookId(),
-                    request.getReaderId());
+                    request.getStatus()
+                    );
         borrowing.setBorrowDate(DateUtils.getCurrentDateString());
         borrowing.setDueDate(DateUtils.getDueToDateString());
         repository.save(borrowing);

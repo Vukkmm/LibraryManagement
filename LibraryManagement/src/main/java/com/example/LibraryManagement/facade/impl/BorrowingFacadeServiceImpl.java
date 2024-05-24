@@ -29,8 +29,9 @@ public class BorrowingFacadeServiceImpl implements BorrowingFacadeService {
         BorrowingResponse response = borrowingService.create(request);
         BookResponse bookResponse = bookService.detail(request.getBookId());
         ReaderResponse readerResponse = readerService.detail(request.getReaderId());
-        response.setReaderResponse(readerResponse);
-        response.setBookResponse(bookResponse);
-        return response;
+
+        return new BorrowingResponse(response.getId(),
+                response.getBorrowDate(), response.getDueDate(), response.getReturnDate(), response.getStatus(),
+                bookResponse,readerResponse);
     }
 }

@@ -10,10 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 public class BorrowingRequest {
+    private String bookId;
+    private String readerId;
     private String borrowDate;
     private String dueDate;
     private String returnDate;
     private String status;
-    private String bookId;
-    private String readerId;
 }
