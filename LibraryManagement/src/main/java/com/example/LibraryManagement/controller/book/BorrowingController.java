@@ -1,5 +1,6 @@
 package com.example.LibraryManagement.controller.book;
 
+import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
 import com.example.LibraryManagement.dto.request.BorrowingRequest;
 import com.example.LibraryManagement.dto.response.BorrowingResponse;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.example.LibraryManagement.constant.CommonConstants.DEFAULT_LANGUAGE;
 import static com.example.LibraryManagement.constant.CommonConstants.LANGUAGE;
 import static com.example.LibraryManagement.constant.MessageCodeConstant.CREATE_BORROWING;
+import static com.example.LibraryManagement.constant.MessageCodeConstant.LIST_BORROWING;
 
 @Slf4j
 @RestController
@@ -23,6 +25,7 @@ import static com.example.LibraryManagement.constant.MessageCodeConstant.CREATE_
 public class BorrowingController {
     private final MessageService messageService;
     private final BorrowingFacadeService borrowingFacadeService;
+    private final BorrowingService borrowingService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -36,5 +39,18 @@ public class BorrowingController {
                 messageService.getMessage(CREATE_BORROWING, language),
                 borrowingFacadeService.create(request)
         );
+    }
+
+    @GetMapping
+    public ResponseGeneral<PageResponse<BorrowingResponse>> list(
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "all", defaultValue = "false", required = false) boolean isAll,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
+        return ResponseGeneral.ofSuccess(messageService.getMessage(LIST_BORROWING, language),
+                borrowingService.list(keyword, size, page, isAll));
     }
 }

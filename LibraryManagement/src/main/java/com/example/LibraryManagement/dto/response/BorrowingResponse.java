@@ -36,7 +36,8 @@ public class BorrowingResponse {
         this.readerResponse = readerResponse;
     }
 
-    public BorrowingResponse(String bookId, String readerId, String borrowDate, String dueDate, String returnDate, String status) {
+    public BorrowingResponse(String id, String bookId, String readerId, String borrowDate, String dueDate, String returnDate, String status) {
+        this.id = id;
         this.bookId = bookId;
         this.readerId = readerId;
         this.borrowDate = borrowDate;
