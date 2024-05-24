@@ -4,6 +4,7 @@ import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
 import com.example.LibraryManagement.dto.request.BorrowingRequest;
 import com.example.LibraryManagement.dto.response.BorrowingResponse;
+import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.facade.BorrowingFacadeService;
 import com.example.LibraryManagement.service.message.MessageService;
 import com.example.LibraryManagement.service.book.BorrowingService;
@@ -15,8 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.example.LibraryManagement.constant.CommonConstants.DEFAULT_LANGUAGE;
 import static com.example.LibraryManagement.constant.CommonConstants.LANGUAGE;
-import static com.example.LibraryManagement.constant.MessageCodeConstant.CREATE_BORROWING;
-import static com.example.LibraryManagement.constant.MessageCodeConstant.LIST_BORROWING;
+import static com.example.LibraryManagement.constant.MessageCodeConstant.*;
 
 @Slf4j
 @RestController
@@ -52,5 +52,17 @@ public class BorrowingController {
         log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
         return ResponseGeneral.ofSuccess(messageService.getMessage(LIST_BORROWING, language),
                 borrowingService.list(keyword, size, page, isAll));
+    }
+
+    @GetMapping("{id}")
+    public  ResponseGeneral<BorrowingResponse> detail(
+            @PathVariable String id,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        log.info("(detail) id : {}", id);
+        return ResponseGeneral.ofSuccess(
+                messageService.getMessage(DETAIL_BORROWING, language),
+                borrowingService.detail(id)
+        );
     }
 }

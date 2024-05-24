@@ -8,4 +8,6 @@ public interface BorrowingService {
     BorrowingResponse create(BorrowingRequest request) ;
 
     PageResponse<BorrowingResponse> list(String keyword, int size, int page, boolean isAll);
+
+    BorrowingResponse detail(String id);
 }

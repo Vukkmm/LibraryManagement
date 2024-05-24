@@ -2,6 +2,7 @@ package com.example.LibraryManagement.repository.book;
 
 import com.example.LibraryManagement.dto.response.BookResponse;
 import com.example.LibraryManagement.dto.response.BorrowingResponse;
+import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.entity.book.Borrowing;
 import com.example.LibraryManagement.repository.BaseRepository;
 import org.springframework.data.domain.Page;
@@ -34,7 +35,13 @@ public interface BorrowingRepository extends BaseRepository<Borrowing> {
       """)
     Page<BorrowingResponse> search(Pageable pageable, String keyword);
 
-
+    @Query("""
+        SELECT new com.example.LibraryManagement.dto.response.BorrowingResponse
+            (r.id, r.bookId, r.readerId, r.borrowDate, r.dueDate, r.retunnDate, r.status)
+        FROM Borrowing r
+        WHERE r.id=:id AND r.isDeleted= false
+        """)
+    BorrowingResponse detail(String id);
 
 
 }

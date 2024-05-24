@@ -4,6 +4,7 @@ import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.request.BorrowingRequest;
 import com.example.LibraryManagement.dto.response.BorrowingResponse;
 import com.example.LibraryManagement.entity.book.Borrowing;
+import com.example.LibraryManagement.exception.book.BorrowingNotFoundException;
 import com.example.LibraryManagement.repository.book.BorrowingRepository;
 import com.example.LibraryManagement.service.book.BorrowingService;
 import com.example.LibraryManagement.utils.DateUtils;
@@ -48,6 +49,22 @@ public class BorrowingServiceImpl implements BorrowingService {
         Page<BorrowingResponse> responses = isAll ? repository.findAllBorrowing(PageRequest.of(page, size))
                 : repository.search(PageRequest.of(page, size), keyword);
         return PageResponse.of(responses.getContent(), responses.getNumberOfElements());
+    }
+
+    @Override
+    public BorrowingResponse detail(String id) {
+        log.info("(detail) id : {}", id);
+        Borrowing borrowing = find(id);
+        return repository.detail(id);
+    }
+
+    private Borrowing find(String id) {
+        log.debug("(find) {}", id);
+        Borrowing borrowing = repository.findById(id).orElseThrow(BorrowingNotFoundException::new);
+        if (borrowing.isDeleted()) {
+            throw new BorrowingNotFoundException();
+        }
+        return borrowing;
     }
 
 

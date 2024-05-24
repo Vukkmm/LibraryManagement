@@ -17,7 +17,8 @@ public class ExceptionCode {
     public static final String READER_ALREADY_EXIST_EXCEPTION = "com.example.LibraryManagement.exception.book.ReaderAlreadyExistException";
     public static final String READER_NOT_FOUND_EXCEPTION = "com.example.LibraryManagement.exception.book.ReaderNotFoundException";
 
-
+    public static final String BORROWING_NOT_FOUND_EXCEPTION = "com.example.LibraryManagement.exception.book.BorrowingNotFoundException";
+    public static final String BORROWING_ALREADY_EXIST_EXCEPTION = "com.example.LibraryManagement.exception.book.BorrowingAlreadyExistException";
 
 
 }
