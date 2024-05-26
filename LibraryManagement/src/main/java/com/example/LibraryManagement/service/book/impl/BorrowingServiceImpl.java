@@ -17,6 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import static com.example.LibraryManagement.constant.CommonConstants.NOT_YET_RETURNED;
+import static com.example.LibraryManagement.constant.CommonConstants.RETURNED;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -35,10 +39,10 @@ public class BorrowingServiceImpl implements BorrowingService {
                     request.getReturnDate(),
                     request.getStatus()
                     );
-        borrowing.setBorrowDate(DateUtils.getCurrentDateString());
-        borrowing.setDueDate(DateUtils.getDueToDateString());
+        borrowing.setBorrowDate(DateUtils.getCurrentDateTimeString());
+        borrowing.setDueDate(DateUtils.getDueToDateTimeString());
         borrowing.setRetunnDate(" ");
-        borrowing.setStatus("NOT YET RETURNED");
+        borrowing.setStatus(NOT_YET_RETURNED);
         repository.save(borrowing);
         return getBorrowingResponse(borrowing);
     }
@@ -50,6 +54,7 @@ public class BorrowingServiceImpl implements BorrowingService {
                 : repository.search(PageRequest.of(page, size), keyword);
         return PageResponse.of(responses.getContent(), responses.getNumberOfElements());
     }
+
 
     @Override
     public BorrowingResponse detail(String id) {
@@ -74,17 +79,10 @@ public class BorrowingServiceImpl implements BorrowingService {
         this.checkStatus(borrowing.getStatus());
         this.checkBookIdForUpdate(borrowing.getBookId(), request.getBookId());
         this.checkReaderIdForUpdate(borrowing.getReaderId(), request.getReaderId());
-        Borrowing newBorrowing = new Borrowing(
-                request.getBookId(),
-                request.getReaderId(),
-                borrowing.getBorrowDate(),
-                borrowing.getDueDate(),
-                request.getReturnDate(),
-                request.getStatus());
-        newBorrowing.setRetunnDate(DateUtils.getCurrentDateString());
-        newBorrowing.setStatus("RETURNED");
-        repository.save(newBorrowing);
-        return getBorrowingResponse(newBorrowing);
+        borrowing.setRetunnDate(DateUtils.getCurrentDateTimeString());
+        borrowing.setStatus(RETURNED);
+        repository.save(borrowing);
+        return getBorrowingResponse(borrowing);
 
     }
 

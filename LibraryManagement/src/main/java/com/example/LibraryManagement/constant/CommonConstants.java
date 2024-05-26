@@ -10,6 +10,14 @@ public class CommonConstants {
     public static final String BLANK_CONSTANT = "";
     public static final int DEFAULT_STATUS = 0;
     public static final String PERCENT = "%";
+    public static final String KEYWORD = "keyword";
+    public static final String SIZE = "size";
+    public static final String PAGE ="page";
+    public static final String ALL = "all";
+    public static final String NOT_YET_RETURNED = "NOT YET RETURNED";
+    public static final String RETURNED = "RETURNED";
+
+
 
 
 }

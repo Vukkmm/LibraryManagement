@@ -12,8 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.LibraryManagement.constant.CommonConstants.DEFAULT_LANGUAGE;
-import static com.example.LibraryManagement.constant.CommonConstants.LANGUAGE;
+import static com.example.LibraryManagement.constant.CommonConstants.*;
 import static com.example.LibraryManagement.constant.MessageCodeConstant.*;
 
 @RestController
@@ -39,10 +38,10 @@ public class CategoryController {
 
     @GetMapping
     public  ResponseGeneral<PageResponse<CategoryResponse>> list(
-            @RequestParam(name = "keyword", required = false) String keyword,
-            @RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "all", defaultValue = "false", required = false) boolean isAll,
+            @RequestParam(name = KEYWORD, required = false) String keyword,
+            @RequestParam(name = SIZE, defaultValue = "10") int size,
+            @RequestParam(name = PAGE, defaultValue = "0") int page,
+            @RequestParam(name = ALL, defaultValue = "false", required = false) boolean isAll,
             @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
         log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);

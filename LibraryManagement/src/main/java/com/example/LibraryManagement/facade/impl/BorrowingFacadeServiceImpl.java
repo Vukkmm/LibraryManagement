@@ -21,7 +21,6 @@ public class BorrowingFacadeServiceImpl implements BorrowingFacadeService {
     private final ReaderService readerService;
     private final BorrowingService borrowingService;
 
-
     @Override
     @Transactional
     public BorrowingResponse create(BorrowingRequest request) {
@@ -30,9 +29,14 @@ public class BorrowingFacadeServiceImpl implements BorrowingFacadeService {
         BookResponse bookResponse = bookService.detail(request.getBookId());
         ReaderResponse readerResponse = readerService.detail(request.getReaderId());
 
-        return new BorrowingResponse(response.getId(),
-                response.getBorrowDate(), response.getDueDate(), response.getReturnDate(), response.getStatus(),
-                bookResponse,readerResponse);
+        return new BorrowingResponse(
+                response.getId(),
+                response.getBorrowDate(),
+                response.getDueDate(),
+                response.getReturnDate(),
+                response.getStatus(),
+                bookResponse,
+                readerResponse);
     }
 
     @Override
@@ -42,9 +46,14 @@ public class BorrowingFacadeServiceImpl implements BorrowingFacadeService {
         BorrowingResponse response = borrowingService.update(id, request);
         BookResponse bookResponse = bookService.detail(request.getBookId());
         ReaderResponse readerResponse = readerService.detail(request.getReaderId());
-        return new BorrowingResponse(response.getId(),
-                response.getBorrowDate(), response.getDueDate(), response.getReturnDate(), response.getStatus(),
-                bookResponse,readerResponse);
+        return new BorrowingResponse(
+                response.getId(),
+                response.getBorrowDate(),
+                response.getDueDate(),
+                response.getReturnDate(),
+                response.getStatus(),
+                bookResponse,
+                readerResponse);
     }
 
 
