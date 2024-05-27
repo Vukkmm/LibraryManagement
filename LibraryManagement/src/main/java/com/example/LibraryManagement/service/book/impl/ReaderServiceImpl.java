@@ -132,9 +132,9 @@ public class ReaderServiceImpl implements ReaderService {
 
     private void checkIsDelete(String id) {
         log.debug("(checkIsDelete) {}", id);
-        Reader reader = repository.findById(id).orElseThrow(BorrowingNotFoundException::new);
+        Reader reader = repository.findById(id).orElseThrow(ReaderNotFoundException::new);
         if (!reader.isDeleted()) {
-            throw new BorrowingNotFoundException();
+            throw new ReaderNotFoundException();
         }
     }
 

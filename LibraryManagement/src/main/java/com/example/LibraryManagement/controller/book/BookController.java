@@ -4,6 +4,7 @@ import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
 import com.example.LibraryManagement.dto.request.BookRequest;
 import com.example.LibraryManagement.dto.response.BookResponse;
+import com.example.LibraryManagement.dto.response.BorrowingResponse;
 import com.example.LibraryManagement.service.message.MessageService;
 import com.example.LibraryManagement.service.book.BookService;
 import jakarta.validation.Valid;
@@ -78,5 +79,18 @@ public class BookController {
             @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
         return ResponseGeneral.ofSuccess(messageService.getMessage(UPDATE_BOOK, language), bookService.update(id, request));
+    }
+
+    @PutMapping("{id}/soft-delete")
+    public ResponseGeneral<BookResponse> softDelete(
+            @PathVariable String id,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+
+    ) {
+        log.info("(update) id : {}", id);
+        return ResponseGeneral.ofSuccess(
+                messageService.getMessage(SOFT_DELETE_BOOK, language),
+                bookService.softDelete(id)
+        );
     }
 }

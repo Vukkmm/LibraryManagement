@@ -5,9 +5,11 @@ import com.example.LibraryManagement.dto.request.BookRequest;
 import com.example.LibraryManagement.dto.response.BookResponse;
 import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.entity.book.Book;
+import com.example.LibraryManagement.entity.book.Borrowing;
 import com.example.LibraryManagement.entity.book.Category;
 import com.example.LibraryManagement.exception.book.BookAlreadyExistException;
 import com.example.LibraryManagement.exception.book.BookNotFoundException;
+import com.example.LibraryManagement.exception.book.BorrowingNotFoundException;
 import com.example.LibraryManagement.exception.book.CategoryNotFoundException;
 import com.example.LibraryManagement.repository.book.BookRepository;
 import com.example.LibraryManagement.repository.book.CategoryRepository;
@@ -65,7 +67,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void delete(String id) {
         log.info("(delete) id : {}", id);
-        this.find(id);
+        this.checkIsDelete(id);
         repository.deleteById(id);
     }
 
@@ -79,6 +81,16 @@ public class BookServiceImpl implements BookService {
         setValueUpdate(book, request);
         repository.save(book);
         return  getBookResponse(book);
+    }
+
+    @Override
+    @Transactional
+    public BookResponse softDelete(String id) {
+        log.info("(softDelete) id : {}", id);
+        Book book = find(id);
+        book.setDeleted(true);
+        repository.save(book);
+        return getBookResponse(book);
     }
 
     private void checkTitleForUpdate(String title, String titleRequest) {
@@ -124,7 +136,11 @@ public class BookServiceImpl implements BookService {
 
     private Category checkCategoryIdExist(String categoryId) {
         log.debug("checkCategoryIdExist() {}", categoryId);
-        return categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+        Category category =  categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+        if(!category.isDeleted()) {
+            throw new CategoryNotFoundException();
+        }
+        return category;
     }
 
     private BookResponse getBookResponse(Book book) {
@@ -136,6 +152,14 @@ public class BookServiceImpl implements BookService {
                 book.getPublicationYear(),
                 getCategoryResponseById(book.getCategoryId())
         );
+    }
+
+    private void checkIsDelete(String id) {
+        log.debug("(checkIsDelete) {}", id);
+        Book book = repository.findById(id).orElseThrow(BookNotFoundException::new);
+        if (!book.isDeleted()) {
+            throw new BookNotFoundException();
+        }
     }
 }
 

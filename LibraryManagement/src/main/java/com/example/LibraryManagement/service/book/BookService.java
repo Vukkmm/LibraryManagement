@@ -17,5 +17,6 @@ public interface BookService {
 
     BookResponse update(String id, BookRequest request) ;
 
+    BookResponse softDelete(String id);
 
 }
