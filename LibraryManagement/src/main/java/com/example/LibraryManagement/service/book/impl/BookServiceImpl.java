@@ -137,7 +137,7 @@ public class BookServiceImpl implements BookService {
     private Category checkCategoryIdExist(String categoryId) {
         log.debug("checkCategoryIdExist() {}", categoryId);
         Category category =  categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
-        if(!category.isDeleted()) {
+        if(category.isDeleted()) {
             throw new CategoryNotFoundException();
         }
         return category;

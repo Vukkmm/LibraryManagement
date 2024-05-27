@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -80,10 +81,9 @@ public class BorrowingServiceImpl implements BorrowingService {
         this.checkBookIdForUpdate(borrowing.getBookId(), request.getBookId());
         this.checkReaderIdForUpdate(borrowing.getReaderId(), request.getReaderId());
         borrowing.setRetunnDate(DateUtils.getCurrentDateTimeString());
-        borrowing.setStatus(EnumStatus.RETURNED.getStatus());
+        this.setUpdateForStatus(borrowing, borrowing.getBorrowDate(), borrowing.getDueDate(), borrowing.getRetunnDate());
         repository.save(borrowing);
         return getBorrowingResponse(borrowing);
-
     }
 
     @Override
@@ -95,6 +95,24 @@ public class BorrowingServiceImpl implements BorrowingService {
         repository.save(borrowing);
         return repository.detail(id);
     }
+
+    private void setUpdateForStatus(Borrowing borrowing, String borrowDate, String dueDate, String returnDate) {
+        log.debug("(setUpdateForStatus) borrowDate : {}, dueDate : {}, returnDate : {}", borrowDate, dueDate, returnDate);
+        long  durationInSecondsBefore = DateUtils.calculateDurationInSeconds(
+                borrowing.getBorrowDate(),
+                borrowing.getDueDate());
+
+        long  durationInSecondsAfter = DateUtils.calculateDurationInSeconds(
+                borrowing.getBorrowDate(),
+                borrowing.getRetunnDate());
+
+        if (durationInSecondsAfter >= durationInSecondsBefore) {
+            borrowing.setStatus(EnumStatus.RETURN_OVERDUE.getStatus());
+        } else {
+            borrowing.setStatus(EnumStatus.RETURNED.getStatus());
+        }
+    }
+
 
     private void checkStatus(String status) {
         log.debug("(checkStatus) status : {}", status);
