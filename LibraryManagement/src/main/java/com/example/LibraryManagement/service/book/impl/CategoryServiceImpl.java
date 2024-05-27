@@ -3,7 +3,9 @@ package com.example.LibraryManagement.service.book.impl;
 import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.request.CategoryRequest;
 import com.example.LibraryManagement.dto.response.CategoryResponse;
+import com.example.LibraryManagement.entity.book.Borrowing;
 import com.example.LibraryManagement.entity.book.Category;
+import com.example.LibraryManagement.exception.book.BorrowingNotFoundException;
 import com.example.LibraryManagement.exception.book.CategoryAlreadyExistException;
 import com.example.LibraryManagement.exception.book.CategoryNotFoundException;
 import com.example.LibraryManagement.repository.book.CategoryRepository;
@@ -53,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void delete(String id) {
         log.info("(delete)id: {}", id);
-        this.find(id);
+        this.checkIsDelete(id);
         repository.deleteById(id);
     }
 
@@ -67,6 +69,15 @@ public class CategoryServiceImpl implements CategoryService {
         setValueUpdate(category, request);
         repository.save(category);
         return new CategoryResponse(category.getId(), category.getName(), category.getDescription());
+    }
+
+    @Override
+    public CategoryResponse softDelete(String id) {
+        log.info("(softDelete) id : {}", id);
+        Category category = find(id);
+        category.setDeleted(true);
+        repository.save(category);
+        return repository.detail(id);
     }
 
     private void setValueUpdate(Category category, CategoryRequest request) {
@@ -100,4 +111,11 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    private void checkIsDelete(String id) {
+        log.debug("(checkIsDelete) {}", id);
+        Category category = repository.findById(id).orElseThrow(CategoryNotFoundException::new);
+        if (!category.isDeleted()) {
+            throw new CategoryNotFoundException();
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.example.LibraryManagement.controller.book;
 import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.base.ResponseGeneral;
 import com.example.LibraryManagement.dto.request.CategoryRequest;
+import com.example.LibraryManagement.dto.response.BorrowingResponse;
 import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.service.book.CategoryService;
 import com.example.LibraryManagement.service.message.MessageService;
@@ -80,5 +81,19 @@ public class CategoryController {
     ) {
         return ResponseGeneral.ofSuccess(messageService.getMessage(UPDATE_CATEGORY, language), categoryService.update(id, request));
     }
+
+    @PutMapping("{id}/soft-delete")
+    public ResponseGeneral<CategoryResponse> softDelete(
+            @PathVariable String id,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+
+    ) {
+        log.info("(update) id : {}", id);
+        return ResponseGeneral.ofSuccess(
+                messageService.getMessage(SOFT_DELETE_CATEGORY, language),
+                categoryService.softDelete(id)
+        );
+    }
+
 
 }

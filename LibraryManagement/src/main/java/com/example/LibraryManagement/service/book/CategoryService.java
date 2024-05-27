@@ -15,4 +15,6 @@ public interface CategoryService {
     void delete(String id);
 
     CategoryResponse  update(String id, CategoryRequest request);
+
+    CategoryResponse softDelete(String id);
 }
