@@ -14,8 +14,6 @@ public class CommonConstants {
     public static final String SIZE = "size";
     public static final String PAGE ="page";
     public static final String ALL = "all";
-    public static final String NOT_YET_RETURNED = "NOT YET RETURNED";
-    public static final String RETURNED = "RETURNED";
 
 
 

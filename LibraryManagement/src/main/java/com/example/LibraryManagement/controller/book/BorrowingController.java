@@ -90,6 +90,19 @@ public class BorrowingController {
         );
     }
 
+    @PutMapping("{id}/soft-delete")
+    public ResponseGeneral<BorrowingResponse> softDelete(
+            @PathVariable String id,
+            @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+
+    ) {
+        log.info("(update) id : {}", id);
+        return ResponseGeneral.ofSuccess(
+                messageService.getMessage(SOFT_DELETE_BORROWING, language),
+                borrowingService.softDelete(id)
+        );
+    }
+
 
 
 }

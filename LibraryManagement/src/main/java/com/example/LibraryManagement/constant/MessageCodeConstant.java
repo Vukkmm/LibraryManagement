@@ -35,6 +35,7 @@ public class MessageCodeConstant {
 
     public static final String DELETE_BORROWING="com.example.LibraryManagement.controller.borrowing.delete";
     public static final String UPDATE_BORROWING="com.example.LibraryManagement.controller.borrowing.update";
+    public static final String SOFT_DELETE_BORROWING="com.example.LibraryManagement.controller.borrowing.softDelete";
 
 
 

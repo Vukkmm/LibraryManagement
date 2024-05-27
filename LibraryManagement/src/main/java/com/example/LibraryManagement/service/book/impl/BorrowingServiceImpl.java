@@ -1,5 +1,6 @@
 package com.example.LibraryManagement.service.book.impl;
 
+import com.example.LibraryManagement.constant.EnumStatus;
 import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.request.BorrowingRequest;
 import com.example.LibraryManagement.dto.response.BorrowingResponse;
@@ -18,8 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import static com.example.LibraryManagement.constant.CommonConstants.NOT_YET_RETURNED;
-import static com.example.LibraryManagement.constant.CommonConstants.RETURNED;
 
 @Slf4j
 @Service
@@ -42,7 +41,7 @@ public class BorrowingServiceImpl implements BorrowingService {
         borrowing.setBorrowDate(DateUtils.getCurrentDateTimeString());
         borrowing.setDueDate(DateUtils.getDueToDateTimeString());
         borrowing.setRetunnDate(" ");
-        borrowing.setStatus(NOT_YET_RETURNED);
+        borrowing.setStatus(EnumStatus.NOT_YET_RETURNED.getStatus());
         repository.save(borrowing);
         return getBorrowingResponse(borrowing);
     }
@@ -63,11 +62,12 @@ public class BorrowingServiceImpl implements BorrowingService {
         return repository.detail(id);
     }
 
+
     @Override
     @Transactional
     public void delete(String id) {
         log.info("(delete) id : {}", id);
-        this.find(id);
+        this.checkIsDelete(id);
         repository.deleteById(id);
     }
 
@@ -80,10 +80,19 @@ public class BorrowingServiceImpl implements BorrowingService {
         this.checkBookIdForUpdate(borrowing.getBookId(), request.getBookId());
         this.checkReaderIdForUpdate(borrowing.getReaderId(), request.getReaderId());
         borrowing.setRetunnDate(DateUtils.getCurrentDateTimeString());
-        borrowing.setStatus(RETURNED);
+        borrowing.setStatus(EnumStatus.RETURNED.getStatus());
         repository.save(borrowing);
         return getBorrowingResponse(borrowing);
 
+    }
+
+    @Override
+    public BorrowingResponse softDelete(String id) {
+        log.info("(softDelete) id : {}", id);
+        Borrowing borrowing = find(id);
+        borrowing.setDeleted(true);
+        repository.save(borrowing);
+        return repository.detail(id);
     }
 
     private void checkStatus(String status) {
@@ -123,6 +132,14 @@ public class BorrowingServiceImpl implements BorrowingService {
             throw new BorrowingNotFoundException();
         }
         return borrowing;
+    }
+
+    private void checkIsDelete(String id) {
+        log.debug("(checkIsDelete) {}", id);
+        Borrowing borrowing = repository.findById(id).orElseThrow(BorrowingNotFoundException::new);
+        if (!borrowing.isDeleted()) {
+            throw new BorrowingNotFoundException();
+        }
     }
 
 

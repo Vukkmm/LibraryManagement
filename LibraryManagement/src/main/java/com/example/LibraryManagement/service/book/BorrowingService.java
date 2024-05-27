@@ -15,4 +15,6 @@ public interface BorrowingService {
 
     BorrowingResponse update(String id, BorrowingRequest request);
 
+    BorrowingResponse softDelete(String id);
+
 }
