@@ -15,4 +15,6 @@ public interface ReaderService {
 
     ReaderResponse update(String id, ReaderRequest request);
 
+    ReaderResponse softDelete(String id);
+
 }

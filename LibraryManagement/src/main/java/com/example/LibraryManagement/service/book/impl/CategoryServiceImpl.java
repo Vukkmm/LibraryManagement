@@ -72,6 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryResponse softDelete(String id) {
         log.info("(softDelete) id : {}", id);
         Category category = find(id);
@@ -118,4 +119,5 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNotFoundException();
         }
     }
+
 }

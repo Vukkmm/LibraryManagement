@@ -87,6 +87,7 @@ public class BorrowingServiceImpl implements BorrowingService {
     }
 
     @Override
+    @Transactional
     public BorrowingResponse softDelete(String id) {
         log.info("(softDelete) id : {}", id);
         Borrowing borrowing = find(id);

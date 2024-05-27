@@ -3,11 +3,9 @@ package com.example.LibraryManagement.service.book.impl;
 import com.example.LibraryManagement.dto.base.PageResponse;
 import com.example.LibraryManagement.dto.request.ReaderRequest;
 import com.example.LibraryManagement.dto.response.ReaderResponse;
+import com.example.LibraryManagement.entity.book.Borrowing;
 import com.example.LibraryManagement.entity.book.Reader;
-import com.example.LibraryManagement.exception.book.EmailAlreadyExistException;
-import com.example.LibraryManagement.exception.book.PhoneNumberAlreadyExistException;
-import com.example.LibraryManagement.exception.book.ReaderAlreadyExistException;
-import com.example.LibraryManagement.exception.book.ReaderNotFoundException;
+import com.example.LibraryManagement.exception.book.*;
 import com.example.LibraryManagement.repository.book.ReaderRepository;
 import com.example.LibraryManagement.service.book.ReaderService;
 import jakarta.transaction.Transactional;
@@ -60,7 +58,7 @@ public class ReaderServiceImpl implements ReaderService {
     @Transactional
     public void delete(String id) {
         log.info("(delete) id : {}", id);
-        this.find(id);
+        this.checkIsDelete(id);
         repository.deleteById(id);
     }
 
@@ -74,6 +72,16 @@ public class ReaderServiceImpl implements ReaderService {
         setValueUpDate(reader, request);
         repository.save(reader);
         return new ReaderResponse(reader.getId(), reader.getName(), reader.getEmail(), reader.getPhoneNumber());
+    }
+
+    @Override
+    @Transactional
+    public ReaderResponse softDelete(String id) {
+        log.info("(softDelete) id : {}", id);
+        Reader reader = find(id);
+        reader.setDeleted(true);
+        repository.save(reader);
+        return repository.detail(id);
     }
 
     private void setValueUpDate(Reader reader, ReaderRequest request) {
@@ -122,6 +130,12 @@ public class ReaderServiceImpl implements ReaderService {
         }
     }
 
-
+    private void checkIsDelete(String id) {
+        log.debug("(checkIsDelete) {}", id);
+        Reader reader = repository.findById(id).orElseThrow(BorrowingNotFoundException::new);
+        if (!reader.isDeleted()) {
+            throw new BorrowingNotFoundException();
+        }
+    }
 
 }
