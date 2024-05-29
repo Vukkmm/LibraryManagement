@@ -14,10 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Optional;
 
@@ -42,6 +39,10 @@ public class CategoryServiceTest {
     private Category mockCategory() {
         return new Category("co tich", "good");
     }
+
+    private CategoryResponse mockCategoryResponse(){
+            return new CategoryResponse("1", "co tich", "good");
+    };
 
 
     @Test
@@ -84,4 +85,17 @@ public class CategoryServiceTest {
         Assertions.assertThrows(CategoryNotFoundException.class, () -> categoryService.detail("1"));
     }
 
+    @Test
+    public void testDetail_WhenSuccess_ReturnThrowException() {
+        CategoryResponse response = mockCategoryResponse();
+        Category mockEntity = mock(Category.class);
+
+        Mockito.when(repository.findById("1")).thenReturn(Optional.of(mockEntity));
+        Mockito.when(mockEntity.isDeleted()).thenReturn(false);
+        Mockito.when(repository.detail("1")).thenReturn(response);
+
+        CategoryResponse responses = categoryService.detail("1");
+        Assertions.assertEquals(response.getName(), responses.getName());
+        Assertions.assertEquals(response.getDescription(), responses.getDescription());
+    }
 }
