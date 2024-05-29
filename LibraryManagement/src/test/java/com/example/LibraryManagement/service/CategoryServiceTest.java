@@ -11,6 +11,7 @@ import com.example.LibraryManagement.service.book.CategoryService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @WebMvcTest(CategoryService.class)
 //@ContextConfiguration(classes = Configuration.class)
@@ -43,9 +48,9 @@ public class CategoryServiceTest {
     public void testCreate_WhenNameCategoryAlready_ThrowException() {
         CategoryRequest request = mockCategoryRequest();
 
-        Mockito.when(repository.checkExist(request.getName())).thenReturn(true);
+        when(repository.checkExist(request.getName())).thenReturn(true);
 
-        Assertions.assertThrows(CategoryAlreadyExistException.class, () -> categoryService.create(mockCategoryRequest()));
+        assertThrows(CategoryAlreadyExistException.class, () -> categoryService.create(mockCategoryRequest()));
     }
 
     @Test
@@ -53,8 +58,8 @@ public class CategoryServiceTest {
         CategoryRequest mockRequest = mockCategoryRequest();
         Category mockEntity = mockCategory();
 
-        Mockito.when(repository.checkExist(mockRequest.getName())).thenReturn(false);
-        Mockito.when(repository.save(mockEntity)).thenReturn(mockEntity);
+        when(repository.checkExist(mockRequest.getName())).thenReturn(false);
+        when(repository.save(mockEntity)).thenReturn(mockEntity);
 
         CategoryResponse response = categoryService.create(mockRequest);
         Assertions.assertEquals(mockEntity.getName(), response.getName());
@@ -63,11 +68,20 @@ public class CategoryServiceTest {
 
     @Test
     public void testDetail_WhenIsCategoryNotFound_ReturnThrowException() {
-        Mockito.when(repository.findById("1")).thenReturn(Optional.empty());
-        Assertions.assertThrows(CategoryNotFoundException.class, ()-> categoryService.detail("1"));
+        when(repository.findById("1")).thenReturn(Optional.empty());
+        assertThrows(CategoryNotFoundException.class, ()-> categoryService.detail("1"));
     }
 
-
-
+    @Test
+    public void testDetail_WhenIsDeleteTrue_ReturnThrowException() {
+        Category mockEntity = mock(Category.class);
+        /**
+         * giả lập 1 đối tượng object
+         * */
+        MockitoAnnotations.openMocks(this);
+        Mockito.when(repository.findById("1")).thenReturn(Optional.of(mockEntity));
+        Mockito.when(mockEntity.isDeleted()).thenReturn(true);
+        Assertions.assertThrows(CategoryNotFoundException.class, () -> categoryService.detail("1"));
+    }
 
 }

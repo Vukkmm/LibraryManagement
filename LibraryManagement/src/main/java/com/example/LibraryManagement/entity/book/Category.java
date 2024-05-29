@@ -27,4 +27,8 @@ public class Category extends BaseEntityWithUpdater {
         this.description = description;
         this.isDeleted = false;
     }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
 }
