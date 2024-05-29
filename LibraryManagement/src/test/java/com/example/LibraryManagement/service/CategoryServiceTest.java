@@ -1,6 +1,6 @@
 package com.example.LibraryManagement.service;
 
-import com.example.LibraryManagement.configuration.Configuration;
+
 import com.example.LibraryManagement.dto.request.CategoryRequest;
 import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.entity.book.Category;
@@ -12,11 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 
 @WebMvcTest(CategoryService.class)
-@ContextConfiguration(classes = Configuration.class)
+//@ContextConfiguration(classes = Configuration.class)
 public class CategoryServiceTest {
 
     @MockBean
@@ -39,12 +41,11 @@ public class CategoryServiceTest {
 
         Mockito.when(repository.checkExist(request.getName())).thenReturn(true);
 
-        Assertions.assertThrows(CategoryAlreadyExistException.class,()-> categoryService.create(mockCategoryRequest()));
-
+        Assertions.assertThrows(CategoryAlreadyExistException.class, () -> categoryService.create(mockCategoryRequest()));
     }
 
     @Test
-    public  void testCreate_WhenSuccess_ReturnCategoryResponse() {
+    public void testCreate_WhenSuccess_ReturnCategoryResponse() {
         CategoryRequest mockRequest = mockCategoryRequest();
         Category mockEntity = mockCategory();
 
@@ -55,6 +56,4 @@ public class CategoryServiceTest {
         Assertions.assertEquals(mockEntity.getName(), response.getName());
         Assertions.assertEquals(mockEntity.getDescription(), response.getDescription());
     }
-
-
 }

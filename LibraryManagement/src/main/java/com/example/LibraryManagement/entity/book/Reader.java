@@ -28,4 +28,11 @@ public class Reader extends BaseEntityWithUpdater {
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
+
+    public Reader(String id, String name, String email, String phoneNumber) {
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
 }
