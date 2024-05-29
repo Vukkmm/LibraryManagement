@@ -5,6 +5,7 @@ import com.example.LibraryManagement.dto.request.CategoryRequest;
 import com.example.LibraryManagement.dto.response.CategoryResponse;
 import com.example.LibraryManagement.entity.book.Category;
 import com.example.LibraryManagement.exception.book.CategoryAlreadyExistException;
+import com.example.LibraryManagement.exception.book.CategoryNotFoundException;
 import com.example.LibraryManagement.repository.book.CategoryRepository;
 import com.example.LibraryManagement.service.book.CategoryService;
 import org.junit.jupiter.api.Assertions;
@@ -16,6 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
+
+import java.util.Optional;
 
 @WebMvcTest(CategoryService.class)
 //@ContextConfiguration(classes = Configuration.class)
@@ -34,6 +37,7 @@ public class CategoryServiceTest {
     private Category mockCategory() {
         return new Category("co tich", "good");
     }
+
 
     @Test
     public void testCreate_WhenNameCategoryAlready_ThrowException() {
@@ -56,4 +60,14 @@ public class CategoryServiceTest {
         Assertions.assertEquals(mockEntity.getName(), response.getName());
         Assertions.assertEquals(mockEntity.getDescription(), response.getDescription());
     }
+
+    @Test
+    public void testDetail_WhenIsCategoryNotFound_ReturnThrowException() {
+        Mockito.when(repository.findById("1")).thenReturn(Optional.empty());
+        Assertions.assertThrows(CategoryNotFoundException.class, ()-> categoryService.detail("1"));
+    }
+
+
+
+
 }
