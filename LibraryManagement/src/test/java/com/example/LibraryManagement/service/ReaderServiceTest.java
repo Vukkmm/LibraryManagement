@@ -39,6 +39,12 @@ public class ReaderServiceTest {
         Assertions.assertThrows(EmailAlreadyExistException.class, ()-> readerService.create(mockRequest));
     }
 
+    @Test
+    public  void testCreate_WhenPhoneNumberAlreadyExist_ReturnThrowException() {
+        ReaderRequest mockRequest = mockReaderRequest();
+        Mockito.when(repository.checkExistPhoneNumber(mockRequest.getPhoneNumber())).thenReturn(true);
+        Assertions.assertThrows(PhoneNumberAlreadyExistException.class, ()-> readerService.create(mockRequest));
+    }
 
-
+    
 }
