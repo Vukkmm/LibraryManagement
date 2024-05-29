@@ -76,10 +76,7 @@ public class CategoryServiceTest {
     @Test
     public void testDetail_WhenIsDeleteTrue_ReturnThrowException() {
         Category mockEntity = mock(Category.class);
-        /**
-         * giả lập 1 đối tượng object
-         * */
-        MockitoAnnotations.openMocks(this);
+
         Mockito.when(repository.findById("1")).thenReturn(Optional.of(mockEntity));
         Mockito.when(mockEntity.isDeleted()).thenReturn(true);
         Assertions.assertThrows(CategoryNotFoundException.class, () -> categoryService.detail("1"));
@@ -97,5 +94,11 @@ public class CategoryServiceTest {
         CategoryResponse responses = categoryService.detail("1");
         Assertions.assertEquals(response.getName(), responses.getName());
         Assertions.assertEquals(response.getDescription(), responses.getDescription());
+    }
+
+    @Test
+    public void testDelete_WhenIdNotFound_ReturnThrowException() {
+        Mockito.when(repository.findById("1")).thenReturn(Optional.empty());
+        Assertions.assertThrows(CategoryNotFoundException.class, ()-> categoryService.delete("1"));
     }
 }
