@@ -28,6 +28,7 @@ public class Category extends BaseEntityWithUpdater {
         this.isDeleted = false;
     }
 
+
     public boolean isDeleted() {
         return isDeleted;
     }
