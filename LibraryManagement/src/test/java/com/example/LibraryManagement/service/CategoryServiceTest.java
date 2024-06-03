@@ -123,8 +123,17 @@ public class CategoryServiceTest {
     public  void testSoftDelete_WhenIdNotFound_ReturnThrowException() {
         Mockito.when(repository.findById("1")).thenReturn(Optional.empty());
         Assertions.assertThrows(CategoryNotFoundException.class, ()-> categoryService.softDelete("1"));
-
     }
+
+    @Test
+    public  void testSoftDelete_WhenIsDeleteTrue_ReturnThrowException() {
+        Category mockEntity = mock(Category.class);
+        Mockito.when(repository.findById("1")).thenReturn(Optional.of(mockEntity));
+        Mockito.when(mockEntity.isDeleted()).thenReturn(true);
+        Assertions.assertThrows(CategoryNotFoundException.class, ()-> categoryService.softDelete("1"));
+    }
+
+
 
 
 }

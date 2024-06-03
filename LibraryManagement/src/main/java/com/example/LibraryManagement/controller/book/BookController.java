@@ -87,7 +87,7 @@ public class BookController {
             @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
 
     ) {
-        log.info("(update) id : {}", id);
+        log.info("(softDelete) id : {}", id);
         return ResponseGeneral.ofSuccess(
                 messageService.getMessage(SOFT_DELETE_BOOK, language),
                 bookService.softDelete(id)
