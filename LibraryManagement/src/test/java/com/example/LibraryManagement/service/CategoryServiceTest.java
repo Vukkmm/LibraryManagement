@@ -133,7 +133,21 @@ public class CategoryServiceTest {
         Assertions.assertThrows(CategoryNotFoundException.class, ()-> categoryService.softDelete("1"));
     }
 
+    @Test
+    public void testSoftDelete_WhenSuccess() {
+        CategoryResponse response = mockCategoryResponse();
+        Category mockEntity = mock(Category.class);
 
+        Mockito.when(repository.findById("1")).thenReturn(Optional.of(mockEntity));
+        Mockito.when(mockEntity.isDeleted()).thenReturn(false);
+        Mockito.when(repository.detail("1")).thenReturn(response);
+
+        CategoryResponse responses = categoryService.softDelete("1");
+        Assertions.assertEquals(response.getName(), responses.getName());
+        Assertions.assertEquals(response.getDescription(), responses.getDescription());
+
+
+    }
 
 
 }
