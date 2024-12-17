@@ -11,7 +11,6 @@ import com.example.LibraryManagement.service.book.CategoryService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -140,6 +139,7 @@ public class CategoryServiceTest {
 
         Mockito.when(repository.findById("1")).thenReturn(Optional.of(mockEntity));
         Mockito.when(mockEntity.isDeleted()).thenReturn(false);
+        Mockito.when(repository.save(mockEntity)).thenReturn(mockEntity);
         Mockito.when(repository.detail("1")).thenReturn(response);
 
         CategoryResponse responses = categoryService.softDelete("1");

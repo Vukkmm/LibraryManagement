@@ -16,4 +16,5 @@ public class BorrowingRequest {
     private String dueDate;
     private String returnDate;
     private String status;
+
 }

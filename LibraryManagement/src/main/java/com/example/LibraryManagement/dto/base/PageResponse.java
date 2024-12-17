@@ -14,7 +14,7 @@ public class PageResponse<T> {
     private List<T> list;
     private int amount;
 
-    public static <T> PageResponse<T> of(List<T> data, Integer amount) {
-        return  new PageResponse<>(data, Objects.nonNull(amount) ? 0 : amount.intValue());
-    }
+        public static <T> PageResponse<T> of(List<T> data, Integer amount) {
+            return  new PageResponse<>(data, Objects.nonNull(amount) ? 0 : amount.intValue());
+        }
 }
